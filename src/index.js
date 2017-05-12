@@ -4,7 +4,7 @@ import { connect, Provider } from 'react-redux';
 import { createStore } from 'redux';
 import './index.css';
 
-const incrementAction = {type: 'INCREMENT'};
+const xIsNextAction = {type: 'XISNEXT'};
 
 const Square = ({ value, onClick }) => (
   <button className="square" onClick={onClick}>
@@ -50,13 +50,12 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true,
+      squares: Array(9).fill(null)
     };
   }
 
   get currentPlayerMark() {
-    return this.state.xIsNext ? 'X' : 'O';
+    return this.props.xIsNext ? 'X' : 'O';
   }
 
   handleClick(i) {
@@ -67,10 +66,8 @@ class Game extends React.Component {
     squares[i] = this.currentPlayerMark;
     this.setState({
       squares: squares,
-      xIsNext: !this.state.xIsNext,
     });
-
-    this.props.dispatch(incrementAction);
+    this.props.dispatch(xIsNextAction);
   }
 
   render() {
@@ -100,9 +97,9 @@ class Game extends React.Component {
 
 Game = connect(state => state)(Game);
 
-const reducer = (state = {count: 0}, action) => {
-  if (action.type === 'INCREMENT') {
-    return Object.assign({}, state, {count: state.count + 1});
+const reducer = (state = {xIsNext: true}, action) => {
+  if (action.type === 'XISNEXT') {
+    return Object.assign({}, state, {xIsNext: !state.xIsNext});
   }
   return state;
 };
