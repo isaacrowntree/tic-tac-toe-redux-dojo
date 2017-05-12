@@ -4,7 +4,7 @@ import { connect, Provider } from 'react-redux';
 import { createStore } from 'redux';
 import './index.css';
 
-const xIsNextAction = {type: 'XISNEXT'};
+const nextMove = (squares) => {return {type: 'NEXTMOVE', squares: squares}};
 
 const Square = ({ value, onClick }) => (
   <button className="square" onClick={onClick}>
@@ -47,31 +47,22 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      squares: Array(9).fill(null)
-    };
-  }
-
   get currentPlayerMark() {
     return this.props.xIsNext ? 'X' : 'O';
   }
 
   handleClick(i) {
-    const squares = this.state.squares.slice();
+    const squares = this.props.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
     squares[i] = this.currentPlayerMark;
-    this.setState({
-      squares: squares,
-    });
-    this.props.dispatch(xIsNextAction);
+
+    this.props.dispatch(nextMove(squares));
   }
 
   render() {
-    const winner = calculateWinner(this.state.squares);
+    const winner = calculateWinner(this.props.squares);
     let status;
     if (winner) {
       status = `Winner: ${winner}`;
@@ -83,7 +74,7 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board
-            squares={this.state.squares}
+            squares={this.props.squares}
             onClick={(i) => this.handleClick(i)} />
         </div>
         <div className="game-info">
@@ -97,7 +88,12 @@ class Game extends React.Component {
 
 Game = connect(state => state)(Game);
 
-const reducer = (state = {xIsNext: true}, action) => {
+const defaultState = {
+  xIsNext: true,
+  squares: Array(9).fill(null)
+};
+
+const reducer = (state = defaultState, action) => {
   if (action.type === 'XISNEXT') {
     return Object.assign({}, state, {xIsNext: !state.xIsNext});
   }
