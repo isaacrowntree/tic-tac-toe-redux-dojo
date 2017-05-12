@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect, Provider } from 'react-redux';
 import { createStore } from 'redux';
+import nextMoveAction from './nextMoveAction';
+import gameReducer from './gameReducer';
 import './index.css';
-
-const nextMove = (squares) => {return {type: 'NEXTMOVE', squares: squares}};
 
 const Square = ({ value, onClick }) => (
   <button className="square" onClick={onClick}>
@@ -58,7 +58,7 @@ class Game extends React.Component {
     }
     squares[i] = this.currentPlayerMark;
 
-    this.props.dispatch(nextMove(squares));
+    this.props.dispatch(nextMoveAction(squares));
   }
 
   render() {
@@ -88,19 +88,7 @@ class Game extends React.Component {
 
 Game = connect(state => state)(Game);
 
-const defaultState = {
-  xIsNext: true,
-  squares: Array(9).fill(null)
-};
-
-const reducer = (state = defaultState, action) => {
-  if (action.type === 'NEXTMOVE') {
-    return Object.assign({}, state, {xIsNext: !state.xIsNext, squares: action.squares});
-  }
-  return state;
-};
-
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(gameReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 store.subscribe(() => {console.log(store.getState())});
 
