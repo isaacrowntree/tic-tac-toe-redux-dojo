@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
 import './index.css';
 
 const Square = ({ value, onClick }) => (
@@ -91,6 +92,10 @@ class Game extends React.Component {
     );
   }
 }
+
+const reducer = (state = {}, action) => state;
+
+const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 // ========================================
 
