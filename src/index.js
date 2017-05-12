@@ -94,8 +94,8 @@ const defaultState = {
 };
 
 const reducer = (state = defaultState, action) => {
-  if (action.type === 'XISNEXT') {
-    return Object.assign({}, state, {xIsNext: !state.xIsNext});
+  if (action.type === 'NEXTMOVE') {
+    return Object.assign({}, state, {xIsNext: !state.xIsNext, squares: action.squares});
   }
   return state;
 };
