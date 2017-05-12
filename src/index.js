@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect, Provider } from 'react-redux';
 import { createStore } from 'redux';
 import './index.css';
 
@@ -86,12 +87,14 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{ status }</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{ this.props.count }</ol>
         </div>
       </div>
     );
   }
 }
+
+Game = connect(state => state)(Game);
 
 const reducer = (state = {count: 0}, action) => {
   if (action.type === 'INCREMENT') {
@@ -111,7 +114,7 @@ store.dispatch(action);
 // ========================================
 
 ReactDOM.render(
-  <Game />,
+  <Provider store={store}><Game /></Provider>,
   document.getElementById('root')
 );
 
