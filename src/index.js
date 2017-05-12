@@ -4,6 +4,8 @@ import { connect, Provider } from 'react-redux';
 import { createStore } from 'redux';
 import './index.css';
 
+const incrementAction = {type: 'INCREMENT'};
+
 const Square = ({ value, onClick }) => (
   <button className="square" onClick={onClick}>
     { value }
@@ -67,6 +69,8 @@ class Game extends React.Component {
       squares: squares,
       xIsNext: !this.state.xIsNext,
     });
+
+    this.props.dispatch(incrementAction);
   }
 
   render() {
@@ -105,11 +109,7 @@ const reducer = (state = {count: 0}, action) => {
 
 const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-const action = {type: 'INCREMENT'};
-
 store.subscribe(() => {console.log(store.getState())});
-
-store.dispatch(action);
 
 // ========================================
 
